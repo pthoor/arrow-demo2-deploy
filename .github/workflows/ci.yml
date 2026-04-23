@@ -1,0 +1,20 @@
+name: CI Deploy
+on:
+  pull_request_target:
+    branches: [main]
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: azure/login@v2
+        with:
+          client-id: 04c6b4e0-2144-48aa-869c-9d0892d11277
+          tenant-id: b29a1c6d-3698-4e5d-b3c6-3a7e2976bf69
+          subscription-id: 26514c5f-388a-4a8b-a22a-6709e4716220
+      - run: bash scripts/build.sh
